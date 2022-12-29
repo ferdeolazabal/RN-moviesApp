@@ -1,10 +1,20 @@
+import { StackScreenProps } from '@react-navigation/stack';
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Button } from 'react-native';
 
-const DetailScreen = () => {
+interface Props extends StackScreenProps<any, any> {}
+
+const DetailScreen = ({ navigation }: Props) => {
     return (
         <View>
-            <Text>DetailScreen</Text>
+            <Text
+                style={{
+                    color: 'black',
+                }}>
+                DetailScreen
+            </Text>
+
+            <Button title="Go to Home" onPress={() => navigation.navigate('HomeScreen')} />
         </View>
     );
 };
