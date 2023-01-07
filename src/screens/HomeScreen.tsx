@@ -4,14 +4,16 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UseMovies } from '../hooks/UseMovies';
-import { View, ActivityIndicator, Dimensions, FlatList, Text, ScrollView } from 'react-native';
+import { View, ActivityIndicator, Dimensions, Text, ScrollView } from 'react-native';
 import MoviePoster from '../components/MoviePoster';
+import { HoriontalSlider } from '../components/HoriontalSlider';
 
 interface Props extends StackScreenProps<any, any> {}
 const { width: windowWidth } = Dimensions.get('window');
 
 const HomeScreen = ({ navigation }: Props) => {
-    const { moviesNowPlaying, isLoading } = UseMovies();
+    const { moviesNowPlaying, popularMovies, topRatedMovies, upcomingMovies, isLoading } =
+        UseMovies();
     const { top } = useSafeAreaInsets();
 
     if (isLoading) {
@@ -25,7 +27,17 @@ const HomeScreen = ({ navigation }: Props) => {
     return (
         <ScrollView>
             <View style={{ marginTop: top + 20 }}>
-                <View style={{ height: 440 }}>
+                <Text
+                    style={{
+                        color: 'black',
+                        fontSize: 30,
+                        fontWeight: 'bold',
+                        marginLeft: 10,
+                        alignSelf: 'center',
+                    }}>
+                    En cartelera
+                </Text>
+                <View style={{ height: 405 }}>
                     <Carousel
                         // Just one of the many styles from the Carousel module
                         mode="parallax"
@@ -53,18 +65,9 @@ const HomeScreen = ({ navigation }: Props) => {
                     />
                 </View>
 
-                <View style={{ height: 250, backgroundColor: 'red' }}>
-                    <Text style={{ fontSize: 30, fontWeight: 'bold' }}>En Cartelera</Text>
-                    <FlatList
-                        data={moviesNowPlaying}
-                        keyExtractor={(item) => item.id.toString()}
-                        renderItem={({ item }) => (
-                            <MoviePoster movie={item} height={200} width={140} />
-                        )}
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                    />
-                </View>
+                <HoriontalSlider title="Populares" movies={popularMovies} />
+                <HoriontalSlider title="Mas valoradas" movies={topRatedMovies} />
+                <HoriontalSlider title="Proximamente" movies={upcomingMovies} />
             </View>
         </ScrollView>
     );
