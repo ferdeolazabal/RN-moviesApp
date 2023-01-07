@@ -11,7 +11,7 @@ interface Props extends StackScreenProps<any, any> {}
 const { width: windowWidth } = Dimensions.get('window');
 
 const HomeScreen = ({ navigation }: Props) => {
-    const { actualMovies, isLoading } = UseMovies();
+    const { moviesNowPlaying, isLoading } = UseMovies();
     const { top } = useSafeAreaInsets();
 
     if (isLoading) {
@@ -47,7 +47,7 @@ const HomeScreen = ({ navigation }: Props) => {
                         // How big the adjacent items will look compared to the "main" item
                         parallaxAdjacentItemScale: 0.75,
                     }}
-                    data={actualMovies}
+                    data={moviesNowPlaying}
                     renderItem={({ item }) => <MoviePoster movie={item} />}
                 />
             </View>
