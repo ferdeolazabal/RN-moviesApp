@@ -2,22 +2,41 @@ import { useEffect, useState } from 'react';
 import movieDB from '../api/movieDB';
 import { MovideDBResponse, Movie } from '../interfaces/movieInterfaces';
 
+interface MoviesState {
+    popular: Movie[];
+    nowPlaying: Movie[];
+    toprated: Movie[];
+    upcoming: Movie[];
+}
+
 export const UseMovies = () => {
-    const [moviesNowPlaying, setMoviesNowPlaying] = useState<Movie[]>([]);
-    const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
-    const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([]);
-    const [upcomingMovies, setUpcomingMovies] = useState<Movie[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [moviesState, setMoviesState] = useState<MoviesState>({
+        popular: [],
+        nowPlaying: [],
+        toprated: [],
+        upcoming: [],
+    });
 
     const getMovies = async () => {
-        const respNowPlaying = await movieDB.get<MovideDBResponse>('/now_playing');
-        const respPopular = await movieDB.get<MovideDBResponse>('/popular');
-        const respTopRated = await movieDB.get<MovideDBResponse>('/top_rated');
-        const respUpcoming = await movieDB.get<MovideDBResponse>('/upcoming');
-        setMoviesNowPlaying(respNowPlaying.data.results);
-        setPopularMovies(respPopular.data.results);
-        setTopRatedMovies(respTopRated.data.results);
-        setUpcomingMovies(respUpcoming.data.results);
+        const nowPlayingPromise = movieDB.get<MovideDBResponse>('/now_playing');
+        const popularPromise = movieDB.get<MovideDBResponse>('/popular');
+        const topRatedPromise = movieDB.get<MovideDBResponse>('/top_rated');
+        const upcomingPromise = movieDB.get<MovideDBResponse>('/upcoming');
+
+        const resp = await Promise.all([
+            nowPlayingPromise,
+            popularPromise,
+            topRatedPromise,
+            upcomingPromise,
+        ]);
+
+        setMoviesState({
+            nowPlaying: resp[0].data.results,
+            popular: resp[1].data.results,
+            toprated: resp[2].data.results,
+            upcoming: resp[3].data.results,
+        });
         setIsLoading(false);
     };
 
@@ -26,10 +45,7 @@ export const UseMovies = () => {
     }, []);
 
     return {
-        moviesNowPlaying,
-        popularMovies,
-        topRatedMovies,
-        upcomingMovies,
+        ...moviesState,
         isLoading,
     };
 };

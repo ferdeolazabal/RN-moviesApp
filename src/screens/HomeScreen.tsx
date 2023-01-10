@@ -12,8 +12,7 @@ interface Props extends StackScreenProps<any, any> {}
 const { width: windowWidth } = Dimensions.get('window');
 
 const HomeScreen = ({ navigation }: Props) => {
-    const { moviesNowPlaying, popularMovies, topRatedMovies, upcomingMovies, isLoading } =
-        UseMovies();
+    const { isLoading, nowPlaying, popular, toprated, upcoming } = UseMovies();
     const { top } = useSafeAreaInsets();
 
     if (isLoading) {
@@ -60,14 +59,14 @@ const HomeScreen = ({ navigation }: Props) => {
                             // How big the adjacent items will look compared to the "main" item
                             parallaxAdjacentItemScale: 0.75,
                         }}
-                        data={moviesNowPlaying}
+                        data={nowPlaying}
                         renderItem={({ item }) => <MoviePoster movie={item} />}
                     />
                 </View>
 
-                <HoriontalSlider title="Populares" movies={popularMovies} />
-                <HoriontalSlider title="Mas valoradas" movies={topRatedMovies} />
-                <HoriontalSlider title="Proximamente" movies={upcomingMovies} />
+                <HoriontalSlider title="Populares" movies={popular} />
+                <HoriontalSlider title="Mas valoradas" movies={toprated} />
+                <HoriontalSlider title="Proximamente" movies={upcoming} />
             </View>
         </ScrollView>
     );
