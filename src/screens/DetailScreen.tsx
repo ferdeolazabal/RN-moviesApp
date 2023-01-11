@@ -2,6 +2,7 @@ import React from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
 import { View, Text, Button, StyleSheet, Image, Dimensions, ScrollView } from 'react-native';
 import { RootStackParams } from '../navigation/NavigationController';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 interface Props extends StackScreenProps<RootStackParams, 'DetailScreen'> {}
 const { height: screenHeight } = Dimensions.get('screen');
@@ -14,12 +15,18 @@ const DetailScreen = ({ navigation, route }: Props) => {
     return (
         <ScrollView>
             <View style={styles.imageContainer}>
-                <Image source={{ uri }} style={styles.posterImage} />
+                <View style={styles.imageBorder}>
+                    <Image source={{ uri }} style={styles.posterImage} />
+                </View>
             </View>
 
             <View style={styles.marginContainer}>
                 <Text style={styles.subTitle}>{movie.original_title}</Text>
                 <Text style={styles.title}>{movie.title}</Text>
+            </View>
+
+            <View style={styles.marginContainer}>
+                <Icon name="star-half-outline" color="grey" size={16} />
             </View>
         </ScrollView>
     );
@@ -38,15 +45,21 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 7,
         elevation: 9,
-    },
-    posterImage: {
-        flex: 1,
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
     },
+    imageBorder: {
+        flex: 1,
+        overflow: 'hidden',
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+    },
+    posterImage: {
+        flex: 1,
+    },
     marginContainer: {
         marginHorizontal: 20,
-        marginTop: 20,
+        marginTop: 10,
     },
     title: {
         color: 'black',
