@@ -20,9 +20,6 @@ const UseMovieDetail = (movieId: number) => {
         const movieDetails = await movieDB.get<FullMovieDetails>(`/${movieId}`);
         const castPromise = await movieDB.get<CreditsResponse>(`/${movieId}/credits`);
 
-        // console.log('movieDetails', movieDetails.data.genres);
-        // console.log('castPromise', castPromise.data.cast);
-
         const [movieDetailsResponse, castDetailsResponse] = await Promise.all([
             movieDetails,
             castPromise,
