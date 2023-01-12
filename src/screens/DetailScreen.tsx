@@ -1,9 +1,17 @@
 import React from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
-import { View, Text, StyleSheet, Image, Dimensions, ScrollView } from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    Dimensions,
+    ScrollView,
+    ActivityIndicator,
+} from 'react-native';
 import { RootStackParams } from '../navigation/NavigationController';
-import Icon from 'react-native-vector-icons/Ionicons';
 import UseMovieDetail from '../hooks/UseMovieDetail';
+import MovieDetails from '../components/MovieDetails';
 
 interface Props extends StackScreenProps<RootStackParams, 'DetailScreen'> {}
 const { height: screenHeight } = Dimensions.get('screen');
@@ -28,9 +36,11 @@ const DetailScreen = ({ navigation, route }: Props) => {
                 <Text style={styles.title}>{movie.title}</Text>
             </View>
 
-            <View style={styles.marginContainer}>
-                <Icon name="star-half-outline" color="grey" size={16} />
-            </View>
+            {isLoading ? (
+                <ActivityIndicator color="grey" size={35} />
+            ) : (
+                <MovieDetails fullMovie={fullMovie!} cast={cast} />
+            )}
         </ScrollView>
     );
 };
