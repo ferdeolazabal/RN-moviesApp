@@ -8,10 +8,12 @@ import {
     Dimensions,
     ScrollView,
     ActivityIndicator,
+    TouchableOpacity,
 } from 'react-native';
 import { RootStackParams } from '../navigation/NavigationController';
 import UseMovieDetail from '../hooks/UseMovieDetail';
 import MovieDetails from '../components/MovieDetails';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 interface Props extends StackScreenProps<RootStackParams, 'DetailScreen'> {}
 const { height: screenHeight } = Dimensions.get('screen');
@@ -41,6 +43,9 @@ const DetailScreen = ({ navigation, route }: Props) => {
             ) : (
                 <MovieDetails fullMovie={fullMovie!} cast={cast} />
             )}
+            <TouchableOpacity onPress={() => navigation.pop()} activeOpacity={0.8}>
+                <Icon name="arrow-back-outline" color="black" size={70} />
+            </TouchableOpacity>
         </ScrollView>
     );
 };

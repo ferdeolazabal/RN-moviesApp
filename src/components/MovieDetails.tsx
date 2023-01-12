@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { Cast } from '../interfaces/creditsInterface';
 import { FullMovieDetails } from '../interfaces/movieInterfaces';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -29,16 +29,17 @@ const MovieDetails = ({ fullMovie, cast }: Props) => {
                     {fullMovie.budget.toLocaleString('en', { style: 'currency', currency: 'USD' })}
                 </Text>
 
-                <View style={{ marginTop: 10, marginBottom: 100 }}>
+                <View style={{ marginTop: 10 }}>
                     <Text style={{ ...styles.title, fontSize: 21 }}>Actores:</Text>
 
-                    <View style={{ flexDirection: 'row' }}>
-                        {cast.map((actor) => (
-                            <View key={actor.id} style={{ marginRight: 10 }}>
-                                <CastItem actor={actor} />
-                            </View>
-                        ))}
-                    </View>
+                    <FlatList
+                        data={cast}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={({ item }) => <CastItem actor={item} />}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        style={{ marginTop: 10, height: 60 }}
+                    />
                 </View>
             </View>
         </>
