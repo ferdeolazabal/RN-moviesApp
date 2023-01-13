@@ -38,7 +38,7 @@ const MovieDetails = ({ fullMovie, cast }: Props) => {
                         renderItem={({ item }) => <CastItem actor={item} />}
                         horizontal
                         showsHorizontalScrollIndicator={false}
-                        style={{ marginTop: 10, height: 60 }}
+                        style={{ marginTop: 10, height: 70 }}
                     />
                 </View>
             </View>

@@ -9,7 +9,7 @@ const CastItem = ({ actor }: Props) => {
     const uri = `https://image.tmdb.org/t/p/w500${actor.profile_path}`;
 
     return (
-        <View style={{ ...styles.cardContainer }}>
+        <View style={styles.cardContainer}>
             {actor.profile_path && <Image source={{ uri }} style={styles.image} />}
             <View style={styles.actorInfo}>
                 <Text style={{ ...styles.title, fontSize: 16 }}>{actor.name}</Text>
