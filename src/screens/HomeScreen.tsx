@@ -1,13 +1,14 @@
-import React from 'react';
-import Carousel from 'react-native-reanimated-carousel';
-import { StackScreenProps } from '@react-navigation/stack';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-import { UseMovies } from '../hooks/UseMovies';
-import { View, ActivityIndicator, Dimensions, Text, ScrollView } from 'react-native';
-import MoviePoster from '../components/MoviePoster';
+import React, { useContext, useEffect } from 'react';
+import { getImageColors } from '../helpers/getColores';
 import { HoriontalSlider } from '../components/HoriontalSlider';
+import { StackScreenProps } from '@react-navigation/stack';
+import { UseMovies } from '../hooks/UseMovies';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, ActivityIndicator, Dimensions, Text, ScrollView } from 'react-native';
 import BackgroundGradient from '../components/BackgroundGradient';
+import Carousel from 'react-native-reanimated-carousel';
+import MoviePoster from '../components/MoviePoster';
+import { GradientContext } from '../context/GradientContext';
 
 interface Props extends StackScreenProps<any, any> {}
 const { width: windowWidth } = Dimensions.get('window');
@@ -15,6 +16,23 @@ const { width: windowWidth } = Dimensions.get('window');
 const HomeScreen = ({ navigation }: Props) => {
     const { isLoading, nowPlaying, popular, toprated, upcoming } = UseMovies();
     const { top } = useSafeAreaInsets();
+
+    const { setMainColors } = useContext(GradientContext);
+
+    const getPosterColors = async (index: number) => {
+        const movie = nowPlaying[index];
+        const uri = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+
+        const [primary = 'green', secondary = 'orange'] = await getImageColors(uri);
+
+        setMainColors({ primary, secondary });
+    };
+
+    useEffect(() => {
+        if (nowPlaying.length > 0) {
+            getPosterColors(0);
+        }
+    }, [nowPlaying]);
 
     if (isLoading) {
         return (
@@ -63,6 +81,7 @@ const HomeScreen = ({ navigation }: Props) => {
                             }}
                             data={nowPlaying}
                             renderItem={({ item }) => <MoviePoster movie={item} />}
+                            onSnapToItem={(index) => getPosterColors(index)}
                         />
                     </View>
 
